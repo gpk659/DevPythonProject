@@ -1,5 +1,5 @@
 # DevPythonProject
-programme écrit en Python permettant de contrôler une machine à distance.
+Programme écrit en Python permettant de contrôler une machine à distance.
 
 Le système se compose de deux programmes :
 - un client (en local utilisé par le hackeur)
