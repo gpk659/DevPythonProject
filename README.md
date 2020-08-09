@@ -8,4 +8,6 @@ Le système se compose de deux programmes :
 Utilisation de try et execpt pour gérer les erreurs.
 Programmé en orienté objet. 
 Communication à travers le réseau avec les sockets.
+Utilisation d'une fonction getinfo() pour pouvoir recuperer des informations.
 
+Grégory Pyck - Hénallux
